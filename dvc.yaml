@@ -7,13 +7,35 @@ stages:
     - data_ingestion.test_size
     outs:
     - data/raw
+
   data_preprocessing:
     cmd: python src/data/data_preprocessing.py
-    deps:
+    deps: 
     - src/data/data_preprocessing.py
     - data/raw/train.csv
     - data/raw/test.csv
-    params:
-    - data_ingestion.test_size
     outs:
     - data/interim
+    - artifact/tfidf_vectorizer.pkl
+
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+    - src/model/model_building.py
+    - data/interim/x_train.npz
+    - data/interim/y_train.npy
+    outs:
+    - artifact/xgboost_model.pkl
+
+  model_evaluation:
+    cmd: python src/model/model_evaluation.py
+    deps:
+    - src/model/model_evaluation.py
+    - artifact/tfidf_vectorizer.pkl
+    - artifact/xgboost_model.pkl
+    - data/interim/x_test.npz
+    - data/interim/y_test.npy
+    outs: 
+    - artifact/experiment_info.json
+  
+  
