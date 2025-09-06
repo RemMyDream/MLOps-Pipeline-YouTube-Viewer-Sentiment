@@ -24,6 +24,8 @@ stages:
     - src/model/model_building.py
     - data/interim/x_train.npz
     - data/interim/y_train.npy
+    params: 
+    - model_building.n_trials
     outs:
     - artifact/xgboost_model.pkl
 
@@ -34,8 +36,14 @@ stages:
     - artifact/tfidf_vectorizer.pkl
     - artifact/xgboost_model.pkl
     - data/interim/x_test.npz
-    - data/interim/y_test.npy
+    - data/interim/y_test.npy    
     outs: 
     - artifact/experiment_info.json
   
+  model_registration:
+    cmd: python src/model/model_registration.py
+    deps: 
+    - src/model/model_registration.py
+    - artifact/experiment_info.json
+
   

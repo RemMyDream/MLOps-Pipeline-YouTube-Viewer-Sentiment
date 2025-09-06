@@ -4,4 +4,4 @@ tf_idf:
   ngram_range: [1,3]
   vectorizer_max_features: 1000
 model_building:
-  n_trials: 2
+  n_trials: 15

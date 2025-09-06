@@ -73,11 +73,12 @@ def log_confusion_matrix(cm, dataset_name):
     mlflow.log_artifact(cm_file_path)
     plt.close()
 
-def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
+def save_model_info(experiment_id: str, run_id: str, model_path: str, file_path: str) -> None:
     """Save the model run ID and path to a JSON file."""
     try:
         # Create a dictionary with the info you want to save
         model_info = {
+            'experiment_id': experiment_id,
             'run_id': run_id,
             'model_path': model_path
         }
@@ -113,8 +114,10 @@ def main():
                                      signature = signature,
                                      input_example = input_example)
             
+            artifact_uri = mlflow.get_artifact_uri()
             model_path = "xgboost_model"
-            save_model_info(run.info.run_id, model_path, "./artifact/experiment_info.json")
+
+            save_model_info(run.info.experiment_id, run.info.run_id, model_path, "./artifact/experiment_info.json")
             mlflow.log_artifact("./artifact/tfidf_vectorizer.pkl")
             report, cm = evaluate_model(model, x_test, y_test)
             # Log classification report metrics for the test data

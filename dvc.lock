@@ -29,12 +29,12 @@ stages:
       size: 5564504
     - path: src/data/data_preprocessing.py
       hash: md5
-      md5: eadbb0456b960968b60175f494ec5c1c
-      size: 5079
+      md5: 1d0bdb2e8fef42349db7074b8fae57d5
+      size: 5077
     outs:
     - path: artifact/tfidf_vectorizer.pkl
       hash: md5
-      md5: dce84447a403e304e1c06a45c4fcda55
+      md5: 6a42ff40e39e8df372ce52f12ddb34da
       size: 36874
     - path: data/interim
       hash: md5
@@ -56,22 +56,25 @@ stages:
       hash: md5
       md5: e9ede1a3fe4504ef8bfb41af09ec5f0f
       size: 4062
+    params:
+      params.yaml:
+        model_building.n_trials: 15
     outs:
     - path: artifact/xgboost_model.pkl
       hash: md5
-      md5: df5aea5b88f09b6bd7ca40fdc22aa9e2
-      size: 5276739
+      md5: 72a2e8dacbc4ca625cf3debbbd62c43f
+      size: 2151418
   model_evaluation:
     cmd: python src/model/model_evaluation.py
     deps:
     - path: artifact/tfidf_vectorizer.pkl
       hash: md5
-      md5: dce84447a403e304e1c06a45c4fcda55
+      md5: 6a42ff40e39e8df372ce52f12ddb34da
       size: 36874
     - path: artifact/xgboost_model.pkl
       hash: md5
-      md5: df5aea5b88f09b6bd7ca40fdc22aa9e2
-      size: 5276739
+      md5: 72a2e8dacbc4ca625cf3debbbd62c43f
+      size: 2151418
     - path: data/interim/x_test.npz
       hash: md5
       md5: d1a98bdeb14b8bb4a15be942c2db0bd4
@@ -82,10 +85,21 @@ stages:
       size: 59000
     - path: src/model/model_evaluation.py
       hash: md5
-      md5: 0568c788ca93cf6f12ded52eb3e0551a
-      size: 5566
+      md5: d79ee3cbacc6716d861048dc8565bb8c
+      size: 5711
     outs:
     - path: artifact/experiment_info.json
       hash: md5
-      md5: 5f6e6cb998323c71a1650ebf0282ec9e
-      size: 90
+      md5: 1832b5e6e35bd5dbfeee036321012efd
+      size: 134
+  model_registration:
+    cmd: python src/model/model_registration.py
+    deps:
+    - path: artifact/experiment_info.json
+      hash: md5
+      md5: 1832b5e6e35bd5dbfeee036321012efd
+      size: 134
+    - path: src/model/model_registration.py
+      hash: md5
+      md5: 09912c2c92f81859d7312b1cb54cc798
+      size: 2034

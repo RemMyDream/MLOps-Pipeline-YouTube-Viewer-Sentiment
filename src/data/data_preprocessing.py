@@ -80,7 +80,6 @@ def apply_tfidf(train_data: pd.DataFrame, test_data: pd.DataFrame, ngram_range: 
         logger.error("Unexpected Error when applying tfidf %s", e)
         raise
 
-
 def save_data(x_train: scipy.sparse.csr_matrix, x_test: scipy.sparse.csr_matrix, y_train: pd.Series, y_test: pd.Series, data_path: str) -> None:
     """Save the processed train and test datasets."""
     try:
